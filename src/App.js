@@ -19,8 +19,12 @@ function App() {
   const [entryId, setEntryId] = useState();
   const [incomeTotal, setIncomeTotal] = useState(0);
   const [expenseTotal, setexpenseTotal] = useState(0);
+<<<<<<< HEAD
   const [total, setTotal] = useState(0);
   const entries = useSelector(state => state.entries);
+=======
+  const [total, setTotal] = useState(0)
+>>>>>>> 9ca4d73db574033f0b546f22d53d63185d22e271
 
   useEffect(() => {
     if (!isOpen && entryId) {
@@ -116,4 +120,35 @@ function App() {
   );
 }
 
+<<<<<<< HEAD
 export default App;
+=======
+export default App;
+
+var initialEntries = [
+  {
+    id: 1,
+    description: 'Work income',
+    value: 1000,
+    isExpense: false
+  },
+  {
+    id: 2,
+    description: 'Water bill',
+    value: 20,
+    isExpense: true
+  },
+  {
+    id: 3,
+    description: 'Rent',
+    value: 300,
+    isExpense: true
+  },
+  {
+    id: 4,
+    description: 'Power bill',
+    value: 50,
+    isExpense: true
+  }
+]
+>>>>>>> 9ca4d73db574033f0b546f22d53d63185d22e271
