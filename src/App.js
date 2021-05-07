@@ -12,28 +12,17 @@ import { useSelector } from 'react-redux';
 
 function App() {
 
-  const [description, setDescription] = useState('');
-  const [value, setValue] = useState('');
-  const [isExpense, setIsExpense] = useState(true);
-  const [isOpen, setIsOpen] = useState(false);
-  const [entryId, setEntryId] = useState();
   const [incomeTotal, setIncomeTotal] = useState(0);
   const [expenseTotal, setexpenseTotal] = useState(0);
   const [total, setTotal] = useState(0);
+  const [entry, setEntry] = useState();
   const entries = useSelector(state => state.entries);
+  const { isOpen, id } = useSelector(state => state.modals);
 
   useEffect(() => {
-    if (!isOpen && entryId) {
-      const index = entries.findIndex(entry => entry.id === entryId);
-      const newEntries = [...entries];
-      newEntries[index].description = description;
-      newEntries[index].value = value;
-      newEntries[index].isExpense = isExpense;
-      //setEntries(newEntries);
-      resetEntry();
-    }
-    // eslint-disable-next-line
-  }, [isOpen]);
+    const index = entries.findIndex(entry => entry.id === id);
+    setEntry(entries[index]);
+  }, [isOpen, id]);
 
   useEffect(() => {
     let totalIncome = 0;
@@ -54,32 +43,6 @@ function App() {
 
   }, [entries]);
 
-  const editEntry = id => {
-    console.log(`edit entry with ID ${id}`);
-    if (id) {
-      const index = entries.findIndex(entry => entry.id === id);
-      const entry = entries[index];
-
-      setEntryId(id);
-      setDescription(entry.description);
-      setValue(entry.value);
-      setIsExpense(entry.isExpense);
-      setIsOpen(true);
-    }
-  }
-
-  const addEntry = () => {
-    const result = entries.concat({id: entries.length + 1, description, value, isExpense});
-    //setEntries(result);
-    resetEntry();
-  };
-
-  const resetEntry = () => {
-    setDescription('');
-    setValue('');
-    setIsExpense(true);
-  }
-
   return (
     <Container>
       <MainHeader title='Budget' />
@@ -88,30 +51,12 @@ function App() {
       <DisplayBalances incomeTotal={incomeTotal} expenseTotal={expenseTotal} />
       <MainHeader title='History' type='h3' />
       
-      <EntryLines
-        entries={entries}
-        editEntry={editEntry} />
+      <EntryLines entries={entries} />
 
       <MainHeader title='Add New Transaction' type='h3' />
-      <NewEntryForm
-        addEntry={addEntry}
-        description={description}
-        setDescription={setDescription}
-        value={value}
-        setValue={setValue}
-        isExpense={isExpense}
-        setIsExpense={setIsExpense} />
+      <NewEntryForm />
 
-      <ModalEdit
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        addEntry={addEntry}
-        description={description}
-        setDescription={setDescription}
-        value={value}
-        setValue={setValue}
-        isExpense={isExpense}
-        setIsExpense={setIsExpense} />
+      <ModalEdit isOpen={isOpen} {...entry} />
     </Container>
   );
 }
